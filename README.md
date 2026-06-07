@@ -1,1 +1,88 @@
 # Bt5_PTUDMNM_AppMonitor_AlertDataRealtime
+## YÊU CẦU BÀI TẬP
+### A. LÝ THUYẾT
+```
++ docker là gì? 
++ các keyword được sử dụng trong docker-compose.yml
+  để mô tả 1 service, network, volume,...
+  liệt kê + ý nghĩa của từ khoá đó + ví dụ minh hoạ
++ ưu điểm khi triển app sử dụng docker là gì?
++ dùng docker: tạo app, test app OK trên laptop cá nhân
+  giờ muốn triển khai app này trên máy chủ thật ko có internet
+  thì các bước cần làm là?
+```
+### B. Thực hành áp dụng: APP MONITOR + ALERT DATA REALTIME
+```
+sử dụng docker compose có nhiều serivce 
+và các thành phần cần thiết để tạo thành ứng dụng:
+ + nodered liên tục lấy dữ liệu từ nguồn nào đó (chứng khoán, thời tiết, giá vàng,...)
+   nguồn thực tế, số liệu luôn động sau thời gian ngắn
+ + nodered lưu trữ dữ liệu vào 2 database: mariadb để lưu giá trị tức thời
+   lưu lịch sử vào influxdb
+ + sử dụng grafana để trực quan hoá dữ liệu: vẽ biểu đồ
+ + sử dụng nginx để làm webserver
+   chạy 1 trang web html+js+css làm front-end
+   js: lấy dữ liệu tức thời trong mariadb qua (ajax | socket) 
+       gọi api (api tự build bằng Flask giống bt1)
+       api trả về giá trị tức thời trong mariadb
+       hiển thị lên web, auto hiển thị số mới khi thay đổi
+   sử dụng iframe để gọi grafana
+   hiển thị biểu đồ dữ liệu lịch sử của thông số đã lưu
+ + QUAN SÁT DỮ LIỆU LỊCH SỬ => GIÁ TRỊ BẤT THƯỜNG
+   (VD MIỀN A..B: OK, DƯỚI A: ALERT LOW, TRÊN B: ALERT HIGH)
+ + nodered: kết hợp bot Telegram
+   khi dữ liệu not OK, thì gửi tin nhắn từ bot => group trên telegram
+   group đã add bot vào: (nhóm đã có 2 người), add thêm 1875746636 thành 3 người
+   mỗi khi bot gửi dữ liệu vào nhóm: mọi member of group đều nhận đc
+   nội dung alert: tường minh, có value gây alert
+
+ xuất tất cả các container ra file nén.
+ xoá mọi container đang chạy
+ load lại các container  từ file nén để khôi phục các container đã xoá
+```
+# BÀI LÀM
+### A. lÝ THUYẾT
+#### 1. Đocker là gì?
+  Docker là một nền tảng mã nguồn mở cho phép đóng gói ứng dụng và tất cả các thành phần phụ thuộc của nó (libraries, dependencies, cấu hình...) vào trong một đơn vị duy nhất gọi là Container.
+##### Vấn đề Docker giải quyết
+##### Các khái niệm cốt lõi
+| Khái niệm            | Định nghĩa                                                                                 | Chức năng                                                                         |
+| -------------------- | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------- |
+| Docker               | Nền tảng mã nguồn mở cho phép đóng gói ứng dụng và các thành phần phụ thuộc vào container. | Đảm bảo ứng dụng hoạt động nhất quán trên nhiều môi trường khác nhau.             |
+| Image                | Mẫu đóng gói chứa mã nguồn, thư viện, cấu hình và môi trường thực thi của ứng dụng.        | Là cơ sở để tạo và khởi chạy container.                                           |
+| Container            | Môi trường thực thi độc lập được tạo từ Docker Image.                                      | Chạy ứng dụng một cách cô lập với hệ điều hành và các ứng dụng khác.              |
+| Dockerfile           | Tệp cấu hình mô tả các bước xây dựng Docker Image.                                         | Tự động hóa quá trình tạo Image từ mã nguồn ứng dụng.                             |
+| Docker Compose       | Công cụ quản lý nhiều container thông qua tệp cấu hình `docker-compose.yml`.               | Triển khai và quản lý toàn bộ hệ thống bằng một lệnh duy nhất.                    |
+| Volume               | Không gian lưu trữ dữ liệu độc lập với vòng đời của container.                             | Duy trì dữ liệu khi container bị xóa hoặc khởi động lại.                          |
+| Network              | Mạng nội bộ được Docker tạo ra để các container giao tiếp với nhau.                        | Cho phép các dịch vụ trong hệ thống kết nối và trao đổi dữ liệu.                  |
+| Registry             | Kho lưu trữ Docker Image trên môi trường cục bộ hoặc trực tuyến.                           | Hỗ trợ chia sẻ, phân phối và tái sử dụng Docker Image.                            |
+| Service              | Thành phần ứng dụng được định nghĩa trong `docker-compose.yml`.                            | Quản lý việc khởi tạo, cấu hình và vận hành các container.                        |
+| Port Mapping         | Cơ chế ánh xạ cổng giữa máy chủ và container.                                              | Cho phép truy cập dịch vụ bên trong container từ bên ngoài.                       |
+| Environment Variable | Các biến môi trường được truyền vào container khi khởi động.                               | Cấu hình ứng dụng linh hoạt mà không cần thay đổi mã nguồn.                       |
+| Bind Mount           | Cơ chế liên kết thư mục hoặc tệp từ máy chủ vào container.                                 | Đồng bộ dữ liệu giữa máy chủ và container trong quá trình phát triển và vận hành. |
+
+#### 2. Các keyword trong docker-compose.yml
+File ``` docker-compose.yml ``` là file cấu hình YAML dùng để mô tả toàn bộ hệ thống multi-container. Cấu trúc tổng quát:
+```
+version: '3.8'      # phiên bản cú pháp Compose
+
+services:           # định nghĩa các container
+  ten_service:
+    ...
+
+networks:           # định nghĩa mạng ảo
+  ten_network:
+    ...
+
+volumes:            # định nghĩa ổ đĩa ảo
+  ten_volume:
+    ...
+```
+#### 2.1. Keyworrds cấp cao nhất (top-level)
+
+| Keyword  | Ý nghĩa                                                                            |
+| -------- | ---------------------------------------------------------------------------------- |
+| version  | Khai báo phiên bản Docker Compose được sử dụng trong tệp cấu hình.                 |
+| services | Khai báo các service (container) cần triển khai trong hệ thống.                    |
+| networks | Định nghĩa các mạng ảo dùng để kết nối và giao tiếp giữa các service.              |
+| volumes  | Định nghĩa các vùng lưu trữ dữ liệu dùng chung hoặc lưu trữ lâu dài cho container. |
