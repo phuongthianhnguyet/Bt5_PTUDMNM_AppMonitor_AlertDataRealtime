@@ -86,3 +86,45 @@ volumes:            # định nghĩa ổ đĩa ảo
 | services | Khai báo các service (container) cần triển khai trong hệ thống.                    |
 | networks | Định nghĩa các mạng ảo dùng để kết nối và giao tiếp giữa các service.              |
 | volumes  | Định nghĩa các vùng lưu trữ dữ liệu dùng chung hoặc lưu trữ lâu dài cho container. |
+#### 2.2. Keywords mô tả Service
+#### 2.3. Keywords mô tả Network
+```
+networks:
+  backend_net:
+    driver: bridge          # loại mạng (bridge là mặc định)
+
+  monitoring_net:
+    driver: bridge
+    ipam:                   # cấu hình IP thủ công
+      config:
+        - subnet: 172.20.0.0/16
+```
+| Driver | Ý nghĩa |
+| :--- | :--- |
+| `bridge` | Mạng ảo riêng — các container trong cùng bridge giao tiếp được với nhau qua tên service |
+| `host` | Container dùng thẳng network interface của máy host (không cô lập network) |
+| `none` | Container không có kết nối mạng |
+#### 2.4. Keywords mô tả Volume
+```
+volumes:
+  mariadb_data:       # Docker tự quản lý vị trí lưu trữ
+    driver: local
+
+  influxdb_data:
+    driver: local
+
+  grafana_data:
+    driver: local
+```
+*** Lưu ý: Named volume được lưu tại /var/lib/docker/volumes/ trên má host. Dữ liệu tồn tại độc lập với vòng đời container.
+#### 2.5. Ví dụ đầy đủ.
+#### 3. Ưu điểm khi triển khai ứng dụng bằng Docker
+| Ưu điểm | Giải thích ngắn gọn |
+| :--- | :--- |
+| **Nhẹ & Nhanh** | Khởi động trong vài giây, tốn ít RAM/CPU hơn ảo hóa truyền thống (VM) vì dùng chung nhân hệ điều hành của máy host. |
+| **Nhất quán (Write Once, Run Anywhere)** | Đóng gói mọi thứ (code, thư viện, cấu hình) vào một Container. Chạy mượt mà từ máy cá nhân lên đến server Production mà không sợ lỗi "vừa chạy được trên máy em cơ mà". |
+| **Cô lập an toàn (Isolation)** | Mỗi container là một môi trường độc lập. Lỗi ứng dụng ở container này hoàn toàn không ảnh hưởng đến container khác hoặc máy host. |
+| **Quản lý phiên bản (Version Control)** | Docker Image có cơ chế lưu vết theo từng layer (tương tự Git). Dễ dàng rollback (quay lại) phiên bản cũ nếu phiên bản mới gặp lỗi. |
+| **Hệ sinh thái lớn (Docker Hub)** | Sở hữu kho lưu trữ khổng lồ chứa hàng triệu image có sẵn (MySQL, Node.js, Nginx...), chỉ cần kéo về (pull) là dùng ngay, tiết kiệm thời gian cài đặt. |
+| **Dễ dàng mở rộng (Scalability)** | Rất linh hoạt trong việc tăng/giảm số lượng container để đáp ứng lượng traffic, phối hợp hoàn hảo với các công cụ điều phối như Kubernetes. |
+#### 4. Triển khai ứng dụng lên máy chủ KHÔNG có internet.
