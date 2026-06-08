@@ -128,3 +128,19 @@ volumes:
 | **Hệ sinh thái lớn (Docker Hub)** | Sở hữu kho lưu trữ khổng lồ chứa hàng triệu image có sẵn (MySQL, Node.js, Nginx...), chỉ cần kéo về (pull) là dùng ngay, tiết kiệm thời gian cài đặt. |
 | **Dễ dàng mở rộng (Scalability)** | Rất linh hoạt trong việc tăng/giảm số lượng container để đáp ứng lượng traffic, phối hợp hoàn hảo với các công cụ điều phối như Kubernetes. |
 #### 4. Triển khai ứng dụng lên máy chủ KHÔNG có internet.
+### B. Thực hành: 
+#### 1. TỔNG QUAN.
+#### 1.1. Giới thiệu bài toán.
+##### Các thành phần cốt lõi của hệ thống:
+1. Node-RED
+2. MariaDB:
+3. InfluxDB(v1.8):
+4. Flask API (Python):
+5. Nginx:
+6. Grafana:
+7. #### 1.2. Kiến trúc hệ thống:
+8. #### 1.3. Danh sách servire và các cổng.
+9. #### 2. Cấu trúc thư mục project.
+10. ##### Chuẩn bị môi trường.
+11. #### 3. Xây dựng và cấu hình hệ thống.
+12. #### 3.1. Cấu hình Docker Compose.
