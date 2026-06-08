@@ -138,9 +138,9 @@ volumes:
 4. Flask API (Python):
 5. Nginx:
 6. Grafana:
-7. #### 1.2. Kiến trúc hệ thống:
-8. #### 1.3. Danh sách servire và các cổng.
-9. #### 2. Cấu trúc thư mục project.
-10. ##### Chuẩn bị môi trường.
-11. #### 3. Xây dựng và cấu hình hệ thống.
-12. #### 3.1. Cấu hình Docker Compose.
+#### 1.2. Kiến trúc hệ thống:
+#### 1.3. Danh sách servire và các cổng.
+#### 2. Cấu trúc thư mục project.
+##### Chuẩn bị môi trường.
+#### 3. Xây dựng và cấu hình hệ thống.
+#### 3.1. Cấu hình Docker Compose.
