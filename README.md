@@ -144,3 +144,8 @@ volumes:
 ##### Chuẩn bị môi trường.
 #### 3. Xây dựng và cấu hình hệ thống.
 #### 3.1. Cấu hình Docker Compose.
+Kiểm tra trạng thái bằng lệnh
+```
+docker compose ps
+```
+<img width="1846" height="729" alt="image" src="https://github.com/user-attachments/assets/1cdba5c0-7f22-470f-bae6-9b1e7e1a6bd7" />
