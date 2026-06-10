@@ -149,7 +149,7 @@ Kiểm tra trạng thái bằng lệnh
 docker compose ps
 ```
 <img width="1846" height="729" alt="image" src="https://github.com/user-attachments/assets/1cdba5c0-7f22-470f-bae6-9b1e7e1a6bd7" />
-### Cấu hình chi tiết InfluxDB Data Source
+### Bước 4. Cấu hình chi tiết InfluxDB Data Source
 
 Chuyển sang tab API Tokens (ngay bên cạnh)  Bấm + GENERATE API TOKEN Chọn All Access Token Đặt tên bừa (ví dụ nodered) Bấm Save.
 Click vào cái Token vừa tạo và bấm Copy to Clipboard để lấy mã Token mới.
@@ -182,4 +182,11 @@ Cuối cùng, kéo xuống dưới cùng bấm nút Save & test.
 
 <img width="954" height="493" alt="image" src="https://github.com/user-attachments/assets/0d5a94d8-9bd4-4a04-bfc1-ef10d67e1918" />
 
+### Bước 5. Tạo Dashboard mới.
+5.1. Tạo Dashboard mớiỞ menu bên trái, bấm vào biểu tượng Dashboards (Hình 4 ô vuông nhỏ) $\rightarrow$ chọn New $\rightarrow$ New Dashboard.Bấm vào nút + Add visualization.Chọn nguồn dữ liệu là InfluxDB mà bạn vừa cấu hình ở Bước 4.
+5.2. Tạo Panel 1: Biểu đồ Nhiệt độ (Temperature)Màn hình thiết kế biểu đồ hiện ra, bạn làm 2 việc: Điền code lấy dữ liệu và Chỉnh giao diện.1. Nhập câu lệnh lấy dữ liệu (Query):Ở khung nhập code phía dưới (ô Query), xóa hết các dòng mẫu đi và dán đoạn code Flux này vào:
+
+<img width="960" height="482" alt="image" src="https://github.com/user-attachments/assets/18528e5e-b45e-4ccb-aaf9-4b278a21fecb" />
+
+<img width="960" height="481" alt="image" src="https://github.com/user-attachments/assets/778cba0c-bbbf-4887-86c3-ab4f3e41f644" />
 
