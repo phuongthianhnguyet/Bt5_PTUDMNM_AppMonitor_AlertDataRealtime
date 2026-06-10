@@ -149,3 +149,37 @@ Kiểm tra trạng thái bằng lệnh
 docker compose ps
 ```
 <img width="1846" height="729" alt="image" src="https://github.com/user-attachments/assets/1cdba5c0-7f22-470f-bae6-9b1e7e1a6bd7" />
+### Cấu hình chi tiết InfluxDB Data Source
+
+Chuyển sang tab API Tokens (ngay bên cạnh)  Bấm + GENERATE API TOKEN Chọn All Access Token Đặt tên bừa (ví dụ nodered) Bấm Save.
+Click vào cái Token vừa tạo và bấm Copy to Clipboard để lấy mã Token mới.
+
+<img width="960" height="482" alt="image" src="https://github.com/user-attachments/assets/24848fbc-917f-4894-9ab8-aec12760f6af" />
+Tại trang cấu hình hiện ra, bạn điền chuẩn xác các thông số như sau:
+
+Query Language: Chọn Flux (Đây là ngôn ngữ truy vấn bắt buộc cho InfluxDB bản 2.x mà bạn đang dùng).
+
+HTTP:
+
+URL: Điền chính xác http://influxdb:8086 (Do Grafana và InfluxDB chạy chung mạng Docker).
+
+Auth: Giữ nguyên mặc định (không tích thêm gì).
+
+InfluxDB Details: (Kéo xuống dưới cùng để thấy mục này)
+
+Organization: Điền app-monitor
+
+Token: Dán cái mã Token siêu dài của InfluxDB mà bạn vừa copy thành công ở bước trước vào đây.
+
+Default Bucket: Điền weather
+
+Cuối cùng, kéo xuống dưới cùng bấm nút Save & test.
+
+<img width="960" height="482" alt="image" src="https://github.com/user-attachments/assets/24848fbc-917f-4894-9ab8-aec12760f6af" />
+
+
+<img width="960" height="508" alt="image" src="https://github.com/user-attachments/assets/446393f1-b170-48bc-af8e-998b54fe8695" />
+
+<img width="954" height="493" alt="image" src="https://github.com/user-attachments/assets/0d5a94d8-9bd4-4a04-bfc1-ef10d67e1918" />
+
+
