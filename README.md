@@ -196,4 +196,13 @@ Dữ liệu của 3 biểu đồ thời tiết đã được cập nhật liên 
 <img width="958" height="481" alt="image" src="https://github.com/user-attachments/assets/82f74b33-8fb0-4de1-a3e5-0b8c5b0bb9ce" />
 
 #### Cảnh báo 
+Ảnh node-red
+
+<img width="960" height="540" alt="image" src="https://github.com/user-attachments/assets/23b070fa-c65d-41fa-a8cb-881d70f04526" />
+
+Ảnh biểu đồ.
+
+<img width="960" height="540" alt="image" src="https://github.com/user-attachments/assets/8deb40a1-dc27-4a12-9653-3aa4e0e8168c" />
+ảnh trên web
+<img width="960" height="484" alt="image" src="https://github.com/user-attachments/assets/d2fca796-b564-4b9e-8605-cf0d711d0e1b" />
 
