@@ -308,7 +308,7 @@ docker compose up -d
 ```
 <img width="704" height="152" alt="image" src="https://github.com/user-attachments/assets/bff58392-94e9-4d1f-81ef-b5f95a061a06" />
 
-- Mở trình duyệt và truy cập trang web, mọi thứ đã được khôi phục lại
+- Mở trình duyệt và truy cập trang web, mọi thứ đã được khôi phục lại 
 
 <img width="470" height="477" alt="image" src="https://github.com/user-attachments/assets/3b91acbe-3663-477a-a68d-3c73dc6ca021" />
 
