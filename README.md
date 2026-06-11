@@ -366,7 +366,7 @@ Các bước:
 
 * Tạo New Group
 * Add Bot
-* Add user ID `1875746636`
+* Add user ID 
 * Cấp quyền Administrator cho Bot
 
 ### Bước 5. Deploy Và Kiểm Tra
