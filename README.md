@@ -131,6 +131,7 @@ volumes:
 ### B. Thực hành: 
 #### 1. TỔNG QUAN.
 #### 1.1. Giới thiệu bài toán.
+Dự án xây dựng một hệ thống giám sát và cảnh báo tự động theo thời gian thực (App Monitor + Alert Data Realtime) áp dụng mô hình kiến trúc vi dịch vụ (Microservices) chạy trên nền tảng Docker Container. Đối tượng giám sát thựC tế được lựa chọn ở đây là Thời tiết Thái Nguyên thu thập trực tiếp thông qua OpenWeatherMap API.
 ##### Các thành phần cốt lõi của hệ thống:
 1. Node-RED
 2. MariaDB:
@@ -138,9 +139,6 @@ volumes:
 4. Flask API (Python):
 5. Nginx:
 6. Grafana:
-#### 1.2. Kiến trúc hệ thống:
-#### 1.3. Danh sách servire và các cổng.
-#### 2. Cấu trúc thư mục project.
 ##### Chuẩn bị môi trường.
 ##### 3. Xây dựng và cấu hình hệ thống.
 Bước 1. Cấu hình Docker Compose.
@@ -284,65 +282,37 @@ Trên giao diện nodered, cột bên trái chứa các node, tại đây ta ké
 - Bước 1. Xuất tất cả các container ra file nén
   - Để đóng gói toàn bộ môi trường thành file nén.tar, chạy lệnh
     ```
-    
-#### Bước 4. Cấu hình chi tiết InfluxDB Data Source
-Chuyển sang tab API Tokens (ngay bên cạnh)  Bấm + GENERATE API TOKEN Chọn All Access Token Đặt tên bừa (ví dụ nodered) Bấm Save.
-Click vào cái Token vừa tạo và bấm Copy to Clipboard để lấy mã Token mới.
+    docker save $(docker compose ps -q | xargs docker inspect --format '{{.Image}}') -o btc_monitor_backup.tar
+    ```
+<img width="707" height="203" alt="image" src="https://github.com/user-attachments/assets/f7929648-2723-49a6-a623-bc20822963f2" />
+- Bước 2. Xoá mọi container đang chạy
+  ```
+  docker compose down
+  ```
+<img width="706" height="148" alt="image" src="https://github.com/user-attachments/assets/9b9aa38d-0e8a-4ed8-8704-37847b011eae" />
 
-<img width="960" height="482" alt="image" src="https://github.com/user-attachments/assets/24848fbc-917f-4894-9ab8-aec12760f6af" />
-Tại trang cấu hình hiện ra, bạn điền chuẩn xác các thông số như sau:
+- Quay lại trình duyệt và F5 sẽ thấy các ttrang web báo lỗi không truy cập được vì toàn bộ máy chủ đã bị xoá.
 
-Query Language: Chọn Flux (Đây là ngôn ngữ truy vấn bắt buộc cho InfluxDB bản 2.x mà bạn đang dùng).
+<img width="479" height="472" alt="image" src="https://github.com/user-attachments/assets/ddbc98e7-cd0b-4a24-99fa-c00dfb4908a5" />
 
-HTTP:
+- Bước 3. Load lại hệ thống từ file nén
+  - Chạy dòng lệnh để hồi sinh:
+  ```
+  docker load -i btc_monitor_backup.tar
+  ```
+  <img width="579" height="131" alt="image" src="https://github.com/user-attachments/assets/1c98c5d5-5780-4672-805b-ea51a6a4a6c9" />
+  
+- Bước 4. Dựng lại toàn bộ hệ thống
+```
+docker compose up -d
+```
+<img width="704" height="152" alt="image" src="https://github.com/user-attachments/assets/bff58392-94e9-4d1f-81ef-b5f95a061a06" />
 
-URL: Điền chính xác http://influxdb:8086 (Do Grafana và InfluxDB chạy chung mạng Docker).
+- Mở trình duyệt và truy cập trang web, mọi thứ đã được khôi phục lại
 
-Auth: Giữ nguyên mặc định (không tích thêm gì).
-
-InfluxDB Details: (Kéo xuống dưới cùng để thấy mục này)
-
-Organization: Điền app-monitor
-
-Token: Dán cái mã Token siêu dài của InfluxDB mà bạn vừa copy thành công ở bước trước vào đây.
-
-Default Bucket: Điền weather
-
-Cuối cùng, kéo xuống dưới cùng bấm nút Save & test.
-
-<img width="960" height="482" alt="image" src="https://github.com/user-attachments/assets/24848fbc-917f-4894-9ab8-aec12760f6af" />
-
-
-<img width="960" height="508" alt="image" src="https://github.com/user-attachments/assets/446393f1-b170-48bc-af8e-998b54fe8695" />
-
-<img width="954" height="493" alt="image" src="https://github.com/user-attachments/assets/0d5a94d8-9bd4-4a04-bfc1-ef10d67e1918" />
-
-### Bước 5. Tạo Dashboard mới.
-5.1. Tạo Dashboard mớiỞ menu bên trái, bấm vào biểu tượng Dashboards (Hình 4 ô vuông nhỏ) $\rightarrow$ chọn New $\rightarrow$ New Dashboard.Bấm vào nút + Add visualization.Chọn nguồn dữ liệu là InfluxDB mà bạn vừa cấu hình ở Bước 4.
-5.2. Tạo Panel 1: Biểu đồ Nhiệt độ (Temperature)Màn hình thiết kế biểu đồ hiện ra, bạn làm 2 việc: Điền code lấy dữ liệu và Chỉnh giao diện.1. Nhập câu lệnh lấy dữ liệu (Query):Ở khung nhập code phía dưới (ô Query), xóa hết các dòng mẫu đi và dán đoạn code Flux này vào:
-
-<img width="960" height="482" alt="image" src="https://github.com/user-attachments/assets/18528e5e-b45e-4ccb-aaf9-4b278a21fecb" />
-
-<img width="960" height="481" alt="image" src="https://github.com/user-attachments/assets/778cba0c-bbbf-4887-86c3-ab4f3e41f644" />
+<img width="470" height="477" alt="image" src="https://github.com/user-attachments/assets/3b91acbe-3663-477a-a68d-3c73dc6ca021" />
 
 
-Dữ liệu của 3 biểu đồ thời tiết đã được cập nhật liên tục.
+<img width="479" height="472" alt="image" src="https://github.com/user-attachments/assets/c97b3f1a-8fa0-41c3-bccd-332f99deca95" />
 
-<img width="958" height="481" alt="image" src="https://github.com/user-attachments/assets/82f74b33-8fb0-4de1-a3e5-0b8c5b0bb9ce" />
-
-#### Cảnh báo 
-Ảnh node-red
-
-<img width="960" height="540" alt="image" src="https://github.com/user-attachments/assets/23b070fa-c65d-41fa-a8cb-881d70f04526" />
-
-Ảnh biểu đồ.
-
-<img width="960" height="540" alt="image" src="https://github.com/user-attachments/assets/8deb40a1-dc27-4a12-9653-3aa4e0e8168c" />
-
-ảnh trên web
-
-<img width="960" height="484" alt="image" src="https://github.com/user-attachments/assets/d2fca796-b564-4b9e-8605-cf0d711d0e1b" />
-
-biểu đồ và cảnh báo chung 1 web
-
-
+#### THE END
