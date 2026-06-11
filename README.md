@@ -190,3 +190,10 @@ Cuối cùng, kéo xuống dưới cùng bấm nút Save & test.
 
 <img width="960" height="481" alt="image" src="https://github.com/user-attachments/assets/778cba0c-bbbf-4887-86c3-ab4f3e41f644" />
 
+
+Dữ liệu của 3 biểu đồ thời tiết đã được cập nhật liên tục.
+
+<img width="958" height="481" alt="image" src="https://github.com/user-attachments/assets/82f74b33-8fb0-4de1-a3e5-0b8c5b0bb9ce" />
+
+#### Cảnh báo 
+
