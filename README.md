@@ -86,8 +86,7 @@ volumes:            # định nghĩa ổ đĩa ảo
 | services | Khai báo các service (container) cần triển khai trong hệ thống.                    |
 | networks | Định nghĩa các mạng ảo dùng để kết nối và giao tiếp giữa các service.              |
 | volumes  | Định nghĩa các vùng lưu trữ dữ liệu dùng chung hoặc lưu trữ lâu dài cho container. |
-#### 2.2. Keywords mô tả Service
-#### 2.3. Keywords mô tả Network
+#### 2.2. Keywords mô tả Network
 ```
 networks:
   backend_net:
@@ -104,7 +103,7 @@ networks:
 | `bridge` | Mạng ảo riêng — các container trong cùng bridge giao tiếp được với nhau qua tên service |
 | `host` | Container dùng thẳng network interface của máy host (không cô lập network) |
 | `none` | Container không có kết nối mạng |
-#### 2.4. Keywords mô tả Volume
+#### 2.3. Keywords mô tả Volume
 ```
 volumes:
   mariadb_data:       # Docker tự quản lý vị trí lưu trữ
@@ -117,8 +116,9 @@ volumes:
     driver: local
 ```
 *** Lưu ý: Named volume được lưu tại /var/lib/docker/volumes/ trên má host. Dữ liệu tồn tại độc lập với vòng đời container.
-#### 2.5. Ví dụ đầy đủ.
+
 #### 3. Ưu điểm khi triển khai ứng dụng bằng Docker
+
 | Ưu điểm | Giải thích ngắn gọn |
 | :--- | :--- |
 | **Nhẹ & Nhanh** | Khởi động trong vài giây, tốn ít RAM/CPU hơn ảo hóa truyền thống (VM) vì dùng chung nhân hệ điều hành của máy host. |
@@ -128,6 +128,22 @@ volumes:
 | **Hệ sinh thái lớn (Docker Hub)** | Sở hữu kho lưu trữ khổng lồ chứa hàng triệu image có sẵn (MySQL, Node.js, Nginx...), chỉ cần kéo về (pull) là dùng ngay, tiết kiệm thời gian cài đặt. |
 | **Dễ dàng mở rộng (Scalability)** | Rất linh hoạt trong việc tăng/giảm số lượng container để đáp ứng lượng traffic, phối hợp hoàn hảo với các công cụ điều phối như Kubernetes. |
 #### 4. Triển khai ứng dụng lên máy chủ KHÔNG có internet.
+- Sơ đồ tổng quan
+  
+[ LAPTOP CÁ NHÂN ] (Có Internet)
+       │
+       ├──► 1. Đóng gói Images  ──► docker save  ──► btc_monitor_backup.tar
+       └──► 2. Nén Cấu hình/Code ──► tar -czvf   ──► app_monitor_code.tar.gz
+       
+                                     │
+                        [ DI CHUYỂN BẰNG USB / LAN ]
+                                     │
+                                     ▼
+ [ MÁY CHỦ THẬT ] (Offline hoàn toàn)
+       │
+       ├──► 3. Giải nén Cấu hình ──► tar -xzvf
+       ├──► 4. Nạp Images vào   ──► docker load ──► Đọc từ file .tar nội bộ
+       └──► 5. Kích hoạt hệ thống──► docker compose up -d (Chạy hoàn toàn Offline)
 ### B. Thực hành: 
 #### 1. TỔNG QUAN.
 #### 1.1. Giới thiệu bài toán.
@@ -182,11 +198,11 @@ Trên giao diện Nod-Red, bấm vào nút Menu -> Chọn Manage palette Chuyể
 ###### Bước 2. Tạo Bot Telegram qua @BotFather để gửi cảnh báo về telegram
 Mở Telegram trên máy tính hoặc điện thoại, tìm @BotFather (tài khoản có tích xanh):
 
-Gửi tin nhắn cho @BotFather: /start
-Gửi lệnh /newbot để yêu cầu tạo một bot mới.
-Đặt tên cho Bot (Name): Nhập tên hiển thị bất kỳ 
-Đặt tên người dùng (Username): Nhập tên viết liền, không dấu và bắt buộc phải kết thúc bằng chữ bot (Ví dụ: anh_nguyet_bot). Tên username này phải là duy nhất trên toàn hệ thống Telegram.
-Sau khi đặt username thành công, BotFather sẽ gửi một đoạn tin nhắn chúc mừng kèm theo mã HTTP API Token. Coppy đoạn mã Token này lại để sau này nhập vào Node-Red
+- Gửi tin nhắn cho @BotFather: /start
+- Gửi lệnh /newbot để yêu cầu tạo một bot mới.
+- Đặt tên cho Bot (Name): Nhập tên hiển thị bất kỳ 
+- Đặt tên người dùng (Username): Nhập tên viết liền, không dấu và bắt buộc phải kết thúc bằng chữ bot (Ví dụ: anh_nguyet_bot). Tên username này phải là duy nhất trên toàn hệ thống Telegram.
+- Sau khi đặt username thành công, BotFather sẽ gửi một đoạn tin nhắn chúc mừng kèm theo mã HTTP API Token. Coppy đoạn mã Token này lại để sau này nhập vào Node-Red
 
 <img width="236" height="221" alt="image" src="https://github.com/user-attachments/assets/3cd1f02d-9ab3-4eee-bb04-e15d2b4dc794" />
 
@@ -312,7 +328,5 @@ docker compose up -d
 
 <img width="470" height="477" alt="image" src="https://github.com/user-attachments/assets/3b91acbe-3663-477a-a68d-3c73dc6ca021" />
 
-
-<img width="479" height="472" alt="image" src="https://github.com/user-attachments/assets/c97b3f1a-8fa0-41c3-bccd-332f99deca95" />
 
 #### THE END
